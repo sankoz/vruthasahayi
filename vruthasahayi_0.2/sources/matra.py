@@ -26,9 +26,14 @@ from utils import *
 
 def findCharType(sylChars):
 	sylCharCount = len(sylChars)
+	#print ("findCharType", sylCharCount)
 	if (sylCharCount == 1):
 		if sylChars[0] in ['\u0d06', '\u0d08', '\u0d0a', '\u0d0f', '\u0d10', '\u0d13', '\u0d14']:
 			return 'sg'	# Independent vowels (AA, II, UU, EE, AI, AU)
+		elif sylChars[0] in ['\u0d7a', '\u0d7b']:
+			return 'nch'	# n chillu
+		elif sylChars[0] in ['\u0d7c', '\u0d7d', '\u0d7e', '\u0d7f']:
+			return 'rlch'	# rl chillu
 		else:
 			return 'sl'
 	elif (sylCharCount == 2):
@@ -45,6 +50,8 @@ def findCharType(sylChars):
 		for oneChar in sylChars:
 			if oneChar in ['\u0d3e', '\u0d40', '\u0d42', '\u0d47', '\u0d48', '\u0d4b', '\u0d4c', '\u0d57', '\u0d02', '\u0d03']:
 				return 'sg' # Dependent vowels (AA, II, UU, EE, AI, OO, AU), ANUSVARA, VISARGA
+			if oneChar in ['\u0d7a', '\u0d7b', '\u0d7c', '\u0d7d', '\u0d7e', '\u0d7f']:
+				return 'sg' # vowel followed by chillu
 		return 'sl'
 	elif (sylCharCount == 3):
 		if '\u0d4d' in sylChars:
@@ -72,6 +79,8 @@ def findCharType(sylChars):
 						return 'sg'
 			elif oneChar == '\u0d47':
 				return 'sg'
+			if oneChar in ['\u0d7a', '\u0d7b', '\u0d7c', '\u0d7d', '\u0d7e', '\u0d7f']:
+				return 'sg' 
 		return 'sg'
 	else:											# If sylCharCount is 4 or more
 		if sylChars[0] in ['\u0d23', '\u0d28', '\u0d30',  '\u0d31', '\u0d32', '\u0d33'] and sylChars[1] == '\u0d4d' and sylChars[2] == '\u200d':
@@ -84,6 +93,8 @@ def findCharType(sylChars):
 		for oneChar in sylChars:
 			if oneChar in ['\u0d3e', '\u0d40', '\u0d42', '\u0d47', '\u0d48', '\u0d4b', '\u0d4c', '\u0d02', '\u0d03']:
 				return 'kg'
+			if oneChar in ['\u0d7a', '\u0d7b', '\u0d7c', '\u0d7d', '\u0d7e', '\u0d7f']:
+				return 'kg' 
 		return 'kl'
 
 def getMatraArray(uniPadyam):
@@ -111,6 +122,9 @@ def getMatraArray(uniPadyam):
 		syllable = findSyllable(strippedPadyam, prev, charCount)
 		sylList = strippedPadyam[prev:syllable]
 		charType = findCharType(sylList)
+		#print("strippedPadyam", strippedPadyam)
+		#print("sylList", sylList)
+		#print("charType", charType)
 		if (charType == 'sl'):
 			glArray.append('v')
 			sylArray.append((prev,syllable-1))

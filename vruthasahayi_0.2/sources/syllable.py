@@ -40,7 +40,6 @@ def atoh(s, hexdigits = string.hexdigits):
 		if index >= 16:
 			index = index - 6
 		value = value*16 + index
-		print ("atoh indx, value=", index, value)
 	return value
 
 def getCharClass(inputchar):
@@ -69,11 +68,18 @@ def getCharClass(inputchar):
 						_xx, _xx, _xx, _xx, _xx, _xx, _xx, _dr, _xx, _xx, _xx, _xx, _xx, _xx, _xx, _xx,	# 0D50 - 0D5F
 						_iv, _iv, _xx, _xx, _xx, _xx, _xx, _xx, _xx, _xx, _xx, _xx, _xx, _xx, _xx, _xx]	# 0D60 - 0D6F
 	if (char == 0x200d):								# C_SIGN_ZWJ
+		#print("getCharClass", char)
 		return 0x80000000 | 9								# CF_CONSONANT | CC_ZERO_WIDTH_MARK
 	if (char == 0x200c):								# C_SIGN_ZWNJ
+		#print("getCharClass2 9")
 		return 9											# CC_ZERO_WIDTH_MARK
+	if ((char >= 0x0d7a) and (char <= 0x0d7f)):
+		#print ("getchar chillu")
+		return 1
 	if ((char < 0x0d00) or (char > 0x0d65)):
+		#print("getCharClass3 0")
 		return 0											# CC_RESERVED
+	#print("getCharClass4", mlymCharClasses[char - 0x0d00])
 	return mlymCharClasses[char - 0x0d00]
 
 def findSyllable(chars, prev, charCount):
